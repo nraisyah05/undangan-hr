@@ -1,0 +1,13 @@
+# Images (optional - uncomment if you want to exclude large images)
+# *.jpg
+# *.jpeg
+# *.png
+# *.mp3
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

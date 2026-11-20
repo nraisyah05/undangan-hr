@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Undangan Pernikahan Rizal &amp; Hafifah</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              cream: '#FDFBF7',
+              softBg: '#F5F2EA',
+              sage: '#2C4A3E',
+              sageLight: '#3D5A45',
+              sageMuted: '#8CA092',
+              gold: '#C5A059',
+              goldLight: '#E6D3A7',
+              goldDark: '#9A7B3E',
+              ink: '#2B302C',
+              inkSoft: '#5A625C'
+            }
+          },
+          fontFamily: {
+            serif: ['Cormorant Garamond', 'serif'],
+            script: ['Great Vibes', 'cursive'],
+            sans: ['Plus Jakarta Sans', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --bg: #FDFBF7;
+      --sage: #2C4A3E;
+      --gold: #C5A059;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg);
+      color: #2B302C;
+      overflow-x: hidden;
+      margin: 0;
+    }
+
+    body.locked {
+      overflow: hidden;
+      height: 100%;
+    }
+
+    input,
+    textarea,
+    select,
+    button {
+      font: inherit;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Glass cards */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(197, 160, 89, 0.25);
+    }
+
+    .glass-card-dark {
+      background: rgba(44, 74, 62, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(197, 160, 89, 0.35);
+    }
+
+    /* ============ COVER ============ */
+    #coverOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      padding: 1.5rem 1rem;
+      overflow-y: auto;
+      transition: transform 1s ease-in-out;
+    }
+
+    #coverOverlay.slide-up {
+      transform: translateY(-100%);
+    }
+
+    #coverHeader,
+    #coverHint {
+      transition: opacity .5s ease;
+    }
+
+    #coverOverlay.opened #coverHeader,
+    #coverOverlay.opened #coverHint {
+      opacity: 0;
+    }
+
+    /* Envelope (z-index diatur manual, bukan kelas Tailwind yang tidak ada) */
+    .env-wrapper {
+      position: relative;
+      width: min(88vw, 340px);
+      height: 250px;
+      margin: 1.5rem 0;
+      perspective: 900px;
+      filter: drop-shadow(0 20px 30px rgba(44, 74, 62, 0.35));
+      flex-shrink: 0;
+    }
+
+    .env-back {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: #8FAA97;
+      border-radius: 12px;
+      border: 1px solid rgba(44, 74, 62, 0.35);
+    }
+
+    .env-letter {
+      position: absolute;
+      left: 6%;
+      right: 6%;
+      top: 6%;
+      height: 84%;
+      z-index: 2;
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid rgba(197, 160, 89, 0.25);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 1rem 1rem 0;
+      text-align: center;
+      transition: transform 1s cubic-bezier(0.34, 1.2, 0.64, 1) .5s;
+    }
+
+    .env-open .env-letter {
+      transform: translateY(-38%);
+    }
+
+    .env-pocket {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      border-radius: 12px;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .env-pocket>div {
+      position: absolute;
+      inset: 0;
+    }
+
+    .env-label {
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      bottom: 5%;
+      z-index: 4;
+      text-align: center;
+      pointer-events: none;
+      background: rgba(255, 255, 255, .88);
+      padding: .35rem .75rem;
+      border-radius: 6px;
+      border: 1px solid rgba(197, 160, 89, 0.25);
+      transition: opacity .4s ease;
+    }
+
+    .env-open .env-label {
+      opacity: 0;
+    }
+
+    .env-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      z-index: 5;
+      background: #6F9079;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform-origin: top center;
+      transition: transform .7s cubic-bezier(0.4, 0, 0.2, 1), z-index 0s .35s;
+    }
+
+    .env-open .env-flap {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .env-seal {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 6;
+      width: 56px;
+      height: 56px;
+      margin: -28px 0 0 -28px;
+      border-radius: 9999px;
+      border: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.35rem;
+      letter-spacing: .05em;
+      background: radial-gradient(circle at 35% 30%, #D8B772, #9A7B3E);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, .25), inset 0 2px 4px rgba(255, 255, 255, .4);
+      animation: pulse-glow 2s infinite;
+      transition: opacity .3s, transform .3s;
+    }
+
+    .env-open .env-seal {
+      animation: none;
+      opacity: 0;
+      transform: scale(.2);
+      pointer-events: none;
+    }
+
+    @keyframes pulse-glow {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(197, 160, 89, .6), 0 4px 15px rgba(0, 0, 0, .25);
+      }
+
+      50% {
+        box-shadow: 0 0 0 12px rgba(197, 160, 89, 0), 0 4px 15px rgba(0, 0, 0, .25);
+      }
+    }
+
+    /* ============ DEKORASI LATAR ============ */
+    #botanical-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+      display: none;
+    }
+
+    #botanical-bg.on {
+      display: block;
+    }
+
+    .deco {
+      position: absolute;
+      width: clamp(120px, 28vw, 220px);
+      aspect-ratio: 1;
+      opacity: .25;
+    }
+
+    .deco>div {
+      width: 100%;
+      height: 100%;
+      animation: floatSlow 7s ease-in-out infinite;
+    }
+
+    .deco.tl {
+      top: -18px;
+      left: -18px;
+    }
+
+    .deco.tr {
+      top: -18px;
+      right: -18px;
+      transform: scaleX(-1);
+    }
+
+    .deco.bl {
+      bottom: -18px;
+      left: -18px;
+      transform: scaleY(-1);
+    }
+
+    .deco.br {
+      bottom: -18px;
+      right: -18px;
+      transform: scale(-1, -1);
+    }
+
+    @keyframes floatSlow {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-10px) rotate(2deg);
+      }
+    }
+
+    @keyframes flyGlide {
+
+      0%,
+      100% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+
+      50% {
+        transform: translate(10px, -12px) rotate(-3deg);
+      }
+    }
+
+    .animate-dove-fly {
+      animation: flyGlide 7s ease-in-out infinite;
+    }
+
+    @keyframes spinSlow {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .animate-spin-slow {
+      animation: spinSlow 12s linear infinite;
+    }
+
+    /* Scroll fade */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity .9s ease-out, transform .9s ease-out;
+    }
+
+    .fade-up.show {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Bingkai lengkung foto */
+    .arch-frame {
+      border-radius: 120px 120px 20px 20px;
+      position: relative;
+    }
+
+    .arch-wrap {
+      position: relative;
+      padding: 8px;
+    }
+
+    .arch-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(197, 160, 89, .45);
+      border-radius: 128px 128px 26px 26px;
+      pointer-events: none;
+    }
+
+    .section-block {
+      padding: 2.5rem 0;
+    }
+
+    /* Band hijau tua (full-width) */
+    .band-dark {
+      position: relative;
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      padding: 4rem 1.25rem;
+      color: #fff;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(197, 160, 89, .12), transparent 60%),
+        linear-gradient(180deg, #223A30 0%, #2C4A3E 50%, #1F362C 100%);
+      border-top: 1px solid rgba(197, 160, 89, .55);
+      border-bottom: 1px solid rgba(197, 160, 89, .55);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
+    }
+
+    .band-inner {
+      max-width: 42rem;
+      margin: 0 auto;
+    }
+
+    @media (min-width: 640px) {
+      .section-block {
+        padding: 3rem 0;
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #F5F2EA;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #8CA092;
+      border-radius: 4px;
+    }
+
+    #wishesFeed {
+      scrollbar-width: thin;
+      scrollbar-color: #8CA092 #F5F2EA;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+
+      .fade-up {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+
+<body class="locked">
+
+  <!-- SVG Global Definitions (jangan pakai display:none agar gradient tetap tampil) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#E6D3A7" />
+        <stop offset="50%" stop-color="#C5A059" />
+        <stop offset="100%" stop-color="#9A7B3E" />
+      </linearGradient>
+      <linearGradient id="rose-petal-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#FFFFFF" />
+        <stop offset="70%" stop-color="#FDFBF7" />
+        <stop offset="100%" stop-color="#EBE5D8" />
+      </linearGradient>
+
+      <symbol id="divider" viewBox="0 0 200 20">
+        <path d="M0 10 H75 M125 10 H200" stroke="url(#gold-grad)" stroke-width="1" />
+        <path d="M100 2 L108 10 L100 18 L92 10 Z" fill="url(#gold-grad)" />
+        <circle cx="82" cy="10" r="2" fill="#C5A059" />
+        <circle cx="118" cy="10" r="2" fill="#C5A059" />
+      </symbol>
+
+      <symbol id="white-rose" viewBox="0 0 100 100">
+        <g stroke="#C5A059" stroke-width="0.8">
+          <path d="M50 15 C30 10, 10 30, 20 55 C30 75, 70 75, 80 55 C90 30, 70 10, 50 15 Z"
+            fill="url(#rose-petal-grad)" />
+          <path d="M25 35 C10 45, 15 70, 35 80 C55 90, 80 80, 85 60 C90 40, 70 25, 50 30"
+            fill="url(#rose-petal-grad)" />
+          <path d="M35 40 C25 50, 30 68, 48 72 C65 75, 75 62, 72 48 C70 35, 52 28, 40 35" fill="#FFFFFF" />
+          <path d="M42 44 C35 50, 38 62, 50 64 C60 65, 66 56, 62 48 C58 40, 48 38, 42 44"
+            fill="url(#rose-petal-grad)" />
+          <path d="M46 48 C42 51, 44 58, 50 59 C55 60, 58 55, 56 50 C54 46, 48 45, 46 48 Z" fill="#E6D3A7" />
+        </g>
+      </symbol>
+
+      <symbol id="dove" viewBox="0 0 120 80">
+        <g fill="#FFFFFF" stroke="#C5A059" stroke-width="1.2" stroke-linejoin="round">
+          <path
+            d="M10 52 C30 40 54 42 72 50 C84 42 92 32 96 20 C102 28 100 40 92 48 C100 50 106 48 112 44 C108 58 94 64 80 62 C62 72 30 68 10 52Z" />
+          <path d="M42 46 C52 20 74 6 98 4 C90 22 74 40 56 54Z" fill="#F4F7F2" />
+          <path d="M54 40 C66 26 78 18 90 14M60 48 C72 34 82 26 92 22" fill="none" stroke="#8CA092"
+            stroke-width="0.8" />
+          <path d="M106 26 L118 30 L106 33Z" fill="#C5A059" stroke="none" />
+          <circle cx="100" cy="25" r="1.8" fill="#2C4A3E" stroke="none" />
+        </g>
+      </symbol>
+
+      <symbol id="swan-pair" viewBox="8 0 240 130">
+        <g transform="translate(0, 0)">
+          <path d="M20 100 C30 115 50 120 75 118 C100 115 115 100 110 82 C105 72 90 70 80 75 C60 85 40 85 20 100Z"
+            fill="url(#rose-petal-grad)" stroke="#C5A059" stroke-width="1.2" />
+          <path d="M35 92 C55 80 80 82 95 92 C85 105 55 108 35 92Z" fill="#FFFFFF" stroke="#8CA092"
+            stroke-width="0.8" />
+          <!-- leher tunggal: garis emas di bawah, putih di atas = outline emas tipis -->
+          <path d="M92 84 C106 74 114 58 108 44 C104 35 102 31 103 27" fill="none" stroke="#C5A059"
+            stroke-width="10.5" stroke-linecap="round" />
+          <path d="M92 84 C106 74 114 58 108 44 C104 35 102 31 103 27" fill="none" stroke="#FFFFFF"
+            stroke-width="8.5" stroke-linecap="round" />
+          <ellipse cx="103" cy="27" rx="6.5" ry="4.5" fill="#FFFFFF" stroke="#C5A059" stroke-width="1" />
+          <path d="M108 26 L120 30 L108 32Z" fill="#C5A059" />
+          <circle cx="102" cy="25" r="1.2" fill="#2C4A3E" />
+        </g>
+        <g transform="translate(256, 0) scale(-1, 1)">
+          <path d="M20 100 C30 115 50 120 75 118 C100 115 115 100 110 82 C105 72 90 70 80 75 C60 85 40 85 20 100Z"
+            fill="url(#rose-petal-grad)" stroke="#C5A059" stroke-width="1.2" />
+          <path d="M35 92 C55 80 80 82 95 92 C85 105 55 108 35 92Z" fill="#FFFFFF" stroke="#8CA092"
+            stroke-width="0.8" />
+          <!-- leher tunggal: garis emas di bawah, putih di atas = outline emas tipis -->
+          <path d="M92 84 C106 74 114 58 108 44 C104 35 102 31 103 27" fill="none" stroke="#C5A059"
+            stroke-width="10.5" stroke-linecap="round" />
+          <path d="M92 84 C106 74 114 58 108 44 C104 35 102 31 103 27" fill="none" stroke="#FFFFFF"
+            stroke-width="8.5" stroke-linecap="round" />
+          <ellipse cx="103" cy="27" rx="6.5" ry="4.5" fill="#FFFFFF" stroke="#C5A059" stroke-width="1" />
+          <path d="M108 26 L120 30 L108 32Z" fill="#C5A059" />
+          <circle cx="102" cy="25" r="1.2" fill="#2C4A3E" />
+        </g>
+        <g transform="translate(128 0) scale(.75) translate(-120 0)">
+          <path d="M120 38 C115 30 105 32 108 42 C112 50 120 56 120 56 C120 56 128 50 132 42 C135 32 125 30 120 38Z"
+            fill="#C5A059" opacity="0.85" />
+        </g>
+      </symbol>
+
+      <!-- Karangan bunga sudut -->
+      <symbol id="garland" viewBox="0 0 200 200">
+        <path d="M10 10 C80 30, 120 90, 140 180 C90 140, 30 80, 10 10 Z" fill="#8CA092" />
+        <path d="M10 10 Q 70 80 140 180" stroke="url(#gold-grad)" stroke-width="2" fill="none" />
+        <use href="#white-rose" x="15" y="15" width="80" height="80" />
+        <use href="#white-rose" x="70" y="20" width="55" height="55" />
+        <use href="#white-rose" x="20" y="75" width="55" height="55" />
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- DEKORASI LATAR -->
+  <div id="botanical-bg" aria-hidden="true">
+    <div class="deco tl">
+      <div><svg class="w-full h-full" viewBox="0 0 200 200">
+          <use href="#garland" />
+        </svg></div>
+    </div>
+    <div class="deco tr">
+      <div style="animation-delay:-2s"><svg class="w-full h-full" viewBox="0 0 200 200">
+          <use href="#garland" />
+        </svg></div>
+    </div>
+    <div class="deco bl">
+      <div style="animation-delay:-3s"><svg class="w-full h-full" viewBox="0 0 200 200">
+          <use href="#garland" />
+        </svg></div>
+    </div>
+    <div class="deco br">
+      <div style="animation-delay:-1s"><svg class="w-full h-full" viewBox="0 0 200 200">
+          <use href="#garland" />
+        </svg></div>
+    </div>
+  </div>
+
+  <!-- AUDIO: letakkan file lagu.mp3 di folder yang sama dengan file HTML ini -->
+  <audio id="audioTrack" src="lagu.mp3" loop preload="auto" playsinline></audio>
+
+  <!-- Tombol musik -->
+  <button id="musicToggle" onclick="toggleAudio()" aria-label="Putar atau hentikan musik"
+    class="fixed right-4 bottom-4 z-50 w-12 h-12 rounded-full glass-card-dark text-brand-gold items-center justify-center shadow-xl transition-transform duration-300 hover:scale-110 hidden">
+    <i id="musicIcon" class="fa-solid fa-compact-disc text-xl animate-spin-slow"></i>
+  </button>
+
+  <!-- Toast -->
+  <div id="toast"
+    class="fixed top-5 left-1/2 -translate-x-1/2 z-[70] glass-card-dark text-white px-5 py-2.5 rounded-full shadow-2xl flex items-center gap-3 transition-all duration-300 -translate-y-20 opacity-0 pointer-events-none max-w-[90vw]">
+    <i class="fa-solid fa-circle-check text-brand-gold"></i>
+    <span id="toastMsg" class="text-xs sm:text-sm font-medium tracking-wide">Pesan</span>
+  </div>
+
+
+  <!-- ========== 1. COVER ========== -->
+  <div id="coverOverlay">
+    <div class="absolute inset-3 sm:inset-6 border border-brand-gold/30 rounded-2xl pointer-events-none"></div>
+    <div class="absolute inset-4 sm:inset-8 border border-brand-sage/10 rounded-xl pointer-events-none"></div>
+
+    <div class="text-center" id="coverHeader">
+      <p class="font-sans text-[11px] sm:text-xs tracking-[0.3em] uppercase text-brand-gold font-semibold mb-2">The
+        Wedding Invitation</p>
+      <h1 class="font-script text-5xl sm:text-6xl text-brand-sage leading-tight">Rizal &amp; Hafifah</h1>
+    </div>
+
+    <div class="env-wrapper" id="envWrapper">
+      <div class="env-back"></div>
+
+      <div class="env-letter">
+        <span class="font-sans text-[10px] tracking-[0.2em] text-brand-gold uppercase font-bold">Walimatul 'Ursy</span>
+        <h2 class="font-script text-3xl text-brand-sage my-1">Rizal &amp; Hafifah</h2>
+        <p class="font-serif text-xs text-brand-inkSoft italic">Senin, 07 Desember 2026</p>
+      </div>
+
+      <div class="env-pocket">
+        <div style="background:#7C9C86; clip-path: polygon(0 0, 50% 50%, 0 100%);"></div>
+        <div style="background:#7C9C86; clip-path: polygon(100% 0, 50% 50%, 100% 100%);"></div>
+        <div style="background:#9DB8A5; clip-path: polygon(0 100%, 50% 50%, 100% 100%);"></div>
+      </div>
+
+      <div class="env-label">
+        <p class="font-sans text-[11px] text-brand-inkSoft">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
+        <p id="guestName"
+          class="font-serif font-bold text-base sm:text-lg text-brand-sage capitalize leading-tight mt-0.5 break-words">
+          Tamu Undangan</p>
+      </div>
+
+      <div class="env-flap"></div>
+
+      <button id="sealBtn" onclick="openInvitation()" aria-label="Buka Undangan" class="env-seal">RH</button>
+    </div>
+
+    <p id="coverHint" class="font-sans text-xs tracking-wider text-brand-sageMuted animate-pulse text-center">
+      <i class="fa-solid fa-envelope-open mr-1 text-brand-gold"></i> Ketuk segel lilin untuk membuka
+    </p>
+  </div>
+
+
+  <!-- ========== KONTEN UTAMA ========== -->
+  <main id="mainContent"
+    class="relative z-10 max-w-2xl mx-auto px-4 sm:px-6 pb-0 opacity-0 transition-opacity duration-1000">
+
+    <!-- 2. HERO -->
+    <section class="relative flex flex-col items-center justify-center text-center py-16" style="min-height:100svh">
+      <!-- Decorative roses in corners -->
+      <div class="absolute top-4 left-4 w-14 h-14 sm:w-20 sm:h-20 pointer-events-none opacity-35">
+        <svg class="w-full h-full"><use href="#white-rose"/></svg>
+      </div>
+      <div class="absolute top-4 right-4 w-14 h-14 sm:w-20 sm:h-20 pointer-events-none opacity-35">
+        <svg class="w-full h-full"><use href="#white-rose"/></svg>
+      </div>
+      <div class="absolute bottom-32 left-4 w-10 h-10 sm:w-14 sm:h-14 pointer-events-none opacity-25">
+        <svg class="w-full h-full"><use href="#white-rose"/></svg>
+      </div>
+      <div class="absolute bottom-32 right-4 w-10 h-10 sm:w-14 sm:h-14 pointer-events-none opacity-25">
+        <svg class="w-full h-full"><use href="#white-rose"/></svg>
+      </div>
+
+      <!-- Flying doves -->
+      <div class="absolute top-6 left-0 sm:left-4 animate-dove-fly pointer-events-none">
+        <svg class="w-14 h-10 sm:w-16 sm:h-12">
+          <use href="#dove" />
+        </svg>
+      </div>
+      <div class="absolute top-16 right-0 sm:right-4 pointer-events-none" style="transform:scaleX(-1)">
+        <div class="animate-dove-fly" style="animation-delay:-3.5s">
+          <svg class="w-14 h-10 sm:w-16 sm:h-12">
+            <use href="#dove" />
+          </svg>
+        </div>
+      </div>
+      <div class="absolute bottom-48 left-8 w-10 h-8 sm:w-12 sm:h-10 pointer-events-none animate-dove-fly opacity-40" style="animation-delay:-5s">
+        <svg class="w-full h-full"><use href="#dove"/></svg>
+      </div>
+      <div class="absolute bottom-48 right-8 w-10 h-8 sm:w-12 sm:h-10 pointer-events-none animate-dove-fly opacity-40" style="transform:scaleX(-1); animation-delay:-1.5s">
+        <svg class="w-full h-full"><use href="#dove"/></svg>
+      </div>
+
+      <div class="fade-up flex flex-col items-center gap-4">
+        <span
+          class="inline-block font-sans text-[11px] sm:text-xs tracking-[0.3em] uppercase text-brand-gold font-semibold bg-brand-gold/10 px-4 py-1.5 rounded-full border border-brand-gold/20">
+          The Wedding Of
+        </span>
+
+        <h1 class="font-script text-6xl sm:text-7xl md:text-8xl text-brand-sage leading-[1.1]">
+          Rizal <span class="text-brand-gold">&amp;</span> Hafifah
+        </h1>
+
+        <div class="flex items-center justify-center gap-2">
+          <svg class="w-8 h-8">
+            <use href="#white-rose" />
+          </svg>
+          <svg class="w-40 sm:w-48 h-5">
+            <use href="#divider" />
+          </svg>
+          <svg class="w-8 h-8">
+            <use href="#white-rose" />
+          </svg>
+        </div>
+
+        <div class="fade-up arch-wrap">
+          <div class="arch-frame w-60 sm:w-72 overflow-hidden shadow-xl bg-brand-softBg">
+            <img id="imgMempelai" src="mempelai.jpg" alt="Ilustrasi mempelai" loading="eager"
+              class="block w-full h-auto object-cover">
+          </div>
+        </div>
+
+        <p class="font-serif text-xl sm:text-2xl text-brand-sage font-medium tracking-wide">Senin, 07 Desember 2026</p>
+
+        <p class="font-sans text-xs sm:text-sm text-brand-inkSoft max-w-md leading-relaxed font-light">
+          Kami mengundang Anda untuk berbagi kebahagiaan dalam acara pernikahan kami
+        </p>
+      </div>
+
+      <div class="absolute bottom-5 inset-x-0 flex justify-center pointer-events-none">
+        <div class="flex flex-col items-center text-brand-sageMuted opacity-70 animate-bounce">
+          <span class="text-[10px] uppercase tracking-widest mb-1">Gulir Ke Bawah</span>
+          <i class="fa-solid fa-chevron-down text-xs"></i>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 3. AYAT -->
+    <section class="band-dark text-center" style="margin-top:1.5rem">
+      <div class="band-inner">
+      <div class="fade-up rounded-2xl border border-brand-gold/40 bg-white/5 p-6 sm:p-8 relative overflow-hidden">
+        <div class="absolute top-2 right-2 w-12 h-12 pointer-events-none">
+          <svg class="w-full h-full">
+            <use href="#white-rose" />
+          </svg>
+        </div>
+
+        <p class="font-script text-3xl sm:text-4xl text-brand-gold mb-3 break-words">Bismillahirrahmanirrahim</p>
+
+        <svg class="w-32 h-4 mx-auto my-4">
+          <use href="#divider" />
+        </svg>
+
+        <blockquote class="font-serif italic text-base sm:text-lg text-white/90 leading-relaxed mb-4">
+          "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu
+          sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan
+          sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang
+          berpikir."
+        </blockquote>
+
+        <cite class="not-italic font-sans text-xs font-semibold tracking-widest text-brand-gold uppercase">— QS. Ar-Rum
+          : 21</cite>
+      </div>
+      </div>
+    </section>
+
+
+    <!-- 4. MEMPELAI -->
+    <section class="section-block text-center relative">
+      <!-- Corner roses -->
+      <div class="absolute top-0 left-0 w-16 h-16 sm:w-24 sm:h-24 pointer-events-none opacity-30">
+        <svg class="w-full h-full"><use href="#white-rose"/></svg>
+      </div>
+      <div class="absolute top-0 right-0 w-16 h-16 sm:w-24 sm:h-24 pointer-events-none opacity-30">
+        <svg class="w-full h-full"><use href="#white-rose"/></svg>
+      </div>
+      <div class="absolute bottom-0 left-0 w-12 h-12 sm:w-16 sm:h-16 pointer-events-none opacity-25">
+        <svg class="w-full h-full"><use href="#white-rose"/></svg>
+      </div>
+      <div class="absolute bottom-0 right-0 w-12 h-12 sm:w-16 sm:h-16 pointer-events-none opacity-25">
+        <svg class="w-full h-full"><use href="#white-rose"/></svg>
+      </div>
+
+      <div class="fade-up flex flex-col items-center gap-3 mb-10">
+        <span class="font-sans text-xs tracking-[0.3em] uppercase text-brand-gold font-semibold">Mempelai</span>
+        <h2 class="font-script text-4xl sm:text-5xl text-brand-sage">Pasangan Bahagia</h2>
+        <svg class="w-52 sm:w-64 h-24">
+          <use href="#swan-pair" />
+        </svg>
+        <svg class="w-40 h-4">
+          <use href="#divider" />
+        </svg>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-8 md:gap-4 items-start justify-items-center">
+
+        <!-- Mempelai wanita -->
+        <div class="fade-up flex flex-col items-center gap-4 w-full">
+          <div class="arch-wrap">
+            <div class="arch-frame w-48 h-64 sm:w-52 sm:h-72 overflow-hidden shadow-xl bg-brand-softBg">
+              <img id="imgWanita" src="foto-wanita.jpg" alt="Hafifah Rahma Hendra" loading="lazy"
+                class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <h3 class="font-script text-4xl text-brand-sage">Hafifah</h3>
+            <p class="font-serif font-bold text-xl text-brand-sage">Hafifah Rahma Hendra</p>
+            <p class="font-sans text-xs sm:text-sm text-brand-inkSoft max-w-xs mx-auto pt-1 leading-relaxed">
+              Putri dari Bapak <span class="font-semibold text-brand-sage">Rafi Rahendra</span> (Alm.)<br>&amp; Ibu
+              <span class="font-semibold text-brand-sage">Rahma</span> (Almh.)
+            </p>
+          </div>
+
+          <a href="https://instagram.com/hrhavivah" target="_blank" rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-gold/10 text-brand-goldDark text-xs font-semibold hover:bg-brand-gold hover:text-white transition-all duration-300">
+            <i class="fa-brands fa-instagram text-sm"></i> @hrhavivah
+          </a>
+        </div>
+
+        <!-- Pemisah -->
+        <div class="fade-up flex flex-col items-center justify-center gap-1 md:self-center">
+          <svg class="w-10 h-10">
+            <use href="#white-rose" />
+          </svg>
+          <span class="font-script text-6xl text-brand-gold leading-none">&amp;</span>
+        </div>
+
+        <!-- Mempelai pria -->
+        <div class="fade-up flex flex-col items-center gap-4 w-full">
+          <div class="arch-wrap">
+            <div class="arch-frame w-48 h-64 sm:w-52 sm:h-72 overflow-hidden shadow-xl bg-brand-softBg">
+              <img id="imgPria" src="foto-pria.jpg" alt="Muhammad Rizal Bakri" loading="lazy"
+                class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <h3 class="font-script text-4xl text-brand-sage">Rizal</h3>
+            <p class="font-serif font-bold text-xl text-brand-sage">Muhammad Rizal Bakri</p>
+            <p class="font-sans text-xs sm:text-sm text-brand-inkSoft max-w-xs mx-auto pt-1 leading-relaxed">
+              Putra dari Bapak <span class="font-semibold text-brand-sage">Bakri</span><br>&amp; Ibu <span
+                class="font-semibold text-brand-sage">Jusna</span>
+            </p>
+          </div>
+
+          <a href="https://instagram.com/mrizalbakri" target="_blank" rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-gold/10 text-brand-goldDark text-xs font-semibold hover:bg-brand-gold hover:text-white transition-all duration-300">
+            <i class="fa-brands fa-instagram text-sm"></i> @mrizalbakri
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 5. COUNTDOWN -->
+    <section class="band-dark text-center relative overflow-hidden">
+      <!-- Decorative doves -->
+      <div class="absolute top-4 left-4 w-12 h-10 sm:w-14 sm:h-12 pointer-events-none animate-dove-fly opacity-30">
+        <svg class="w-full h-full"><use href="#dove"/></svg>
+      </div>
+      <div class="absolute top-4 right-4 w-12 h-10 sm:w-14 sm:h-12 pointer-events-none animate-dove-fly opacity-30" style="transform:scaleX(-1); animation-delay:-2s">
+        <svg class="w-full h-full"><use href="#dove"/></svg>
+      </div>
+      <div class="absolute bottom-4 left-8 w-10 h-8 sm:w-12 sm:h-10 pointer-events-none animate-dove-fly opacity-25" style="animation-delay:-4s">
+        <svg class="w-full h-full"><use href="#dove"/></svg>
+      </div>
+      <div class="absolute bottom-4 right-8 w-10 h-8 sm:w-12 sm:h-10 pointer-events-none animate-dove-fly opacity-25" style="transform:scaleX(-1); animation-delay:-1s">
+        <svg class="w-full h-full"><use href="#dove"/></svg>
+      </div>
+
+      <div class="band-inner">
+      <div class="fade-up">
+        <p class="font-sans text-xs tracking-[0.25em] uppercase text-brand-goldLight font-medium mb-1">Menuju Hari
+          Bahagia</p>
+        <h3 class="font-script text-3xl sm:text-4xl text-white mb-6">Hitung Mundur</h3>
+
+        <div id="countdown" class="grid grid-cols-4 gap-2 sm:gap-4 max-w-sm mx-auto"></div>
+
+        <svg class="w-32 h-4 mx-auto my-6">
+          <use href="#divider" />
+        </svg>
+
+        <p class="font-sans text-xs sm:text-sm text-gray-200 font-light leading-relaxed">
+          Kehadiran dan doa restu Anda akan menjadi bagian berharga dari hari istimewa kami.
+        </p>
+      </div>
+
+
+
+    <!-- 6. ACARA (diisi otomatis dari DATA.acara lewat renderEvents()) -->
+    <div class="text-center" style="margin-top:4rem">
+      <div class="fade-up flex flex-col items-center gap-2 mb-8">
+        <span class="font-sans text-xs tracking-[0.3em] uppercase text-brand-gold font-semibold">Save The Date</span>
+        <h2 class="font-serif text-3xl sm:text-4xl text-white font-bold">Waktu &amp; Tempat</h2>
+        <svg class="w-40 h-4">
+          <use href="#divider" />
+        </svg>
+      </div>
+
+      <div id="eventsContainer" class="space-y-6"></div>
+    </div>
+      </div>
+    </section>
+
+
+    <!-- 7. BUKU TAMU -->
+    <section class="section-block relative">
+      <!-- Corner roses -->
+      <div class="absolute top-4 left-4 w-12 h-12 sm:w-16 sm:h-16 pointer-events-none opacity-25">
+        <svg class="w-full h-full"><use href="#white-rose"/></svg>
+      </div>
+      <div class="absolute top-4 right-4 w-12 h-12 sm:w-16 sm:h-16 pointer-events-none opacity-25">
+        <svg class="w-full h-full"><use href="#white-rose"/></svg>
+      </div>
+
+      <div class="fade-up glass-card rounded-2xl p-6 sm:p-8 shadow-lg space-y-6">
+        <div class="text-center space-y-2">
+          <span class="font-sans text-xs tracking-[0.25em] uppercase text-brand-gold font-semibold">Buku Tamu</span>
+          <h2 class="font-serif text-2xl sm:text-3xl text-brand-sage font-bold">Ucapan &amp; Doa Restu</h2>
+          <p class="font-sans text-xs sm:text-sm text-brand-inkSoft max-w-sm mx-auto leading-relaxed">
+            Tinggalkan doa dan harapan terbaik untuk kedua mempelai. Setiap ucapan yang dikirim akan ditampilkan di buku
+            tamu.
+          </p>
+        </div>
+
+        <form onsubmit="addGuestbookWish(event)"
+          class="space-y-3 bg-white/60 p-4 sm:p-5 rounded-xl border border-brand-sage/10">
+          <div>
+            <label for="wishName" class="block text-left text-xs font-semibold text-brand-sage mb-1.5">Nama</label>
+            <input type="text" id="wishName" required maxlength="60" placeholder="Tuliskan nama Anda"
+              class="w-full px-4 py-3 rounded-lg border border-brand-sage/20 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-gold/40">
+          </div>
+          <div>
+            <label for="wishText" class="block text-left text-xs font-semibold text-brand-sage mb-1.5">Ucapan &amp; Doa
+              Restu</label>
+            <textarea id="wishText" rows="4" required maxlength="500"
+              placeholder="Tuliskan doa dan harapan terbaik Anda..."
+              class="w-full px-4 py-3 rounded-lg border border-brand-sage/20 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-gold/40 resize-y"></textarea>
+          </div>
+          <button type="submit"
+            class="w-full py-3 px-4 rounded-lg bg-brand-sage text-white text-sm font-semibold hover:bg-brand-sageLight transition-colors flex items-center justify-center gap-2">
+            <i class="fa-solid fa-paper-plane"></i> Kirim Ucapan
+          </button>
+          <p class="text-[10px] text-center text-brand-inkSoft">Terima kasih telah berbagi doa dan kebahagiaan bersama
+            kami.</p>
+        </form>
+
+        <div class="space-y-3">
+          <div class="flex items-center justify-between gap-3">
+            <h3 class="font-serif text-lg sm:text-xl font-bold text-brand-sage">Doa &amp; Ucapan Tamu</h3>
+            <span id="wishCount" class="text-[10px] sm:text-xs text-brand-sageMuted whitespace-nowrap">0 ucapan</span>
+          </div>
+          <div id="wishesFeed" class="space-y-3 max-h-96 overflow-y-auto pr-1" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 8. TANDA KASIH -->
+    <section class="band-dark text-center">
+      <div class="band-inner">
+      <div class="fade-up space-y-6">
+        <div class="flex flex-col items-center gap-2">
+          <span class="font-sans text-xs tracking-[0.3em] uppercase text-brand-gold font-semibold">Love Gift</span>
+          <h2 class="font-serif text-3xl sm:text-4xl text-white font-bold">Tanda Kasih</h2>
+          <svg class="w-32 h-4">
+            <use href="#divider" />
+          </svg>
+        </div>
+
+        <p class="font-sans text-xs sm:text-sm text-gray-200 max-w-md mx-auto leading-relaxed">
+          Doa restu Anda merupakan hadiah terindah bagi kami. Namun jika Anda ingin memberikan tanda kasih secara
+          cashless, Anda dapat menyalurkannya melalui rekening berikut:
+        </p>
+
+        <div id="bankContainer" class="space-y-4 max-w-sm mx-auto"></div>
+      </div>
+
+
+
+    <!-- 9. PENUTUP -->
+    <footer class="pt-16 pb-2 text-center relative overflow-hidden">
+      <!-- Decorative doves flying -->
+      <div class="absolute top-8 left-4 w-14 h-11 sm:w-16 sm:h-12 pointer-events-none animate-dove-fly opacity-40">
+        <svg class="w-full h-full"><use href="#dove"/></svg>
+      </div>
+      <div class="absolute top-8 right-4 w-14 h-11 sm:w-16 sm:h-12 pointer-events-none animate-dove-fly opacity-40" style="transform:scaleX(-1); animation-delay:-2s">
+        <svg class="w-full h-full"><use href="#dove"/></svg>
+      </div>
+      <div class="absolute top-20 left-12 w-10 h-8 sm:w-12 sm:h-10 pointer-events-none animate-dove-fly opacity-30" style="animation-delay:-4s">
+        <svg class="w-full h-full"><use href="#dove"/></svg>
+      </div>
+      <div class="absolute top-20 right-12 w-10 h-8 sm:w-12 sm:h-10 pointer-events-none animate-dove-fly opacity-30" style="transform:scaleX(-1); animation-delay:-1s">
+        <svg class="w-full h-full"><use href="#dove"/></svg>
+      </div>
+
+      <!-- Corner roses -->
+      <div class="absolute bottom-16 left-4 w-12 h-12 sm:w-16 sm:h-16 pointer-events-none opacity-30">
+        <svg class="w-full h-full"><use href="#white-rose"/></svg>
+      </div>
+      <div class="absolute bottom-16 right-4 w-12 h-12 sm:w-16 sm:h-16 pointer-events-none opacity-30">
+        <svg class="w-full h-full"><use href="#white-rose"/></svg>
+      </div>
+
+      <div class="fade-up flex flex-col items-center gap-5">
+        <div class="flex items-center justify-center gap-3">
+          <div class="animate-dove-fly"><svg class="w-12 h-9">
+              <use href="#dove" />
+            </svg></div>
+          <svg class="w-52 h-24">
+            <use href="#swan-pair" />
+          </svg>
+          <div style="transform:scaleX(-1)">
+            <div class="animate-dove-fly" style="animation-delay:-3s"><svg class="w-12 h-9">
+                <use href="#dove" />
+              </svg></div>
+          </div>
+        </div>
+
+        <p class="font-sans text-xs sm:text-sm text-gray-200 max-w-md mx-auto leading-relaxed px-2">
+          Merupakan suatu kebahagiaan dan kehormatan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan
+          doa restu kepada kedua mempelai.
+        </p>
+
+        <p class="font-serif italic text-base text-brand-goldLight font-semibold">
+          Wassalamu'alaikum Warahmatullahi Wabarakatuh
+        </p>
+
+        <div class="pt-2">
+          <p class="font-sans text-[10px] uppercase tracking-[0.25em] text-brand-gold font-bold">Kami Yang Berbahagia
+          </p>
+          <h2 class="font-script text-5xl text-white mt-6">Hafifah &amp; Rizal</h2>
+        </div>
+
+        <p class="pt-6 text-[11px] text-gray-300 font-light">
+          &copy; 2026 Undangan Digital by @Abbyana.nii
+        </p>
+      </div>
+    </footer>
+      </div>
+    </section>
+
+  </main>
+
+
+  <script>
+    /* ========== DATA ========== */
+    const DATA = {
+      pria: "Rizal",
+      wanita: "Hafifah",
+      bank: [
+        {bank: "Bank Mandiri", no: "1080033768814", an: "HAFIFAH RAHMA HENDRA", icon: "fa-building-columns"},
+        {bank: "Bank BCA", no: "0343698744", an: "HAFIFAH RAHMA HENDRA", icon: "fa-credit-card"},
+        {bank: "Bank BRI", no: "554701017755532", an: "MUHAMMAD RIZAL BAKRI", icon: "fa-landmark"}
+      ],
+      acara: [
+        {
+          judul: "Akad Nikah & Syukuran",
+          tanggal: "2026-12-07T09:00:00+07:00",
+          tanggalTeks: "Senin, 07 Desember 2026",
+          sesi: [
+            {
+              nama: "Akad Nikah",
+              jam: "09.00 WIB",
+              tempat: "KUA Kecamatan Sail",
+              kota: "Pekanbaru, Riau",
+              maps: "https://maps.app.goo.gl/o7JRLsVhV95a9Z2BA"
+            },
+            {
+              nama: "Syukuran & Makan Bersama",
+              jam: "11.00 WIB",
+              catatan: "Acara intim, khusus keluarga dan kerabat terdekat.",
+              tempat: "JL. Diponegoro III No 43 A Pekanbaru",
+              maps: "https://goo.gl/maps/bSapL71uHGRuqjrw8?g_st=ai"
+            }
+          ]
+        },
+        {
+          judul: "Resepsi Pernikahan",
+          tanggal: "2026-12-28T10:00:00+07:00",
+          tanggalTeks: "Senin, 28 Desember 2026",
+          waktu: "Pukul 10.00 WIB - Selesai",
+          tempat: "KTK Perumahan Pandan Putri Indah Blok C 15",
+          kota: "Solok, Sumatera Barat",
+          maps: "https://maps.app.goo.gl/6cSGVYaptf6ZaBuE8?g_st=ai"
+        }
+      ]
+    };
+
+    // Buku tamu disimpan di LocalStorage (hanya terlihat di browser/perangkat yang sama).
+    const GUESTBOOK_STORAGE_KEY = 'rizalHafifah_guestbook_v1';
+    let wishesList = loadGuestbook();
+
+    function loadGuestbook() {
+      try {
+        const saved = localStorage.getItem(GUESTBOOK_STORAGE_KEY);
+        const parsed = saved ? JSON.parse(saved) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {return [];}
+    }
+    function saveGuestbook() {
+      try {
+        localStorage.setItem(GUESTBOOK_STORAGE_KEY, JSON.stringify(wishesList));
+        return true;
+      } catch (e) {
+        showToast('Ucapan belum dapat disimpan di perangkat ini.');
+        return false;
+      }
+    }
+    function escapeHTML(v) {
+      return String(v).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'}[c]));
+    }
+
+    const $ = id => document.getElementById(id);
+
+    let toastTimer;
+    function showToast(message) {
+      const toast = $('toast');
+      $('toastMsg').textContent = message;
+      toast.classList.remove('opacity-0', '-translate-y-20');
+      toast.classList.add('opacity-100', 'translate-y-0');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', '-translate-y-20');
+      }, 3000);
+    }
+
+    function formatGoogleCalUrl(ev) {
+      const start = new Date(ev.tanggal);
+      const end = new Date(start.getTime() + 3 * 3600 * 1000);
+      const fmt = d => d.toISOString().replace(/[-:]|\.\d{3}/g, "");
+      const title = `${ev.judul} ${DATA.pria} & ${DATA.wanita}`;
+      const details = `Acara Pernikahan ${DATA.pria} & ${DATA.wanita}`;
+      const src = ev.tempat ? ev : ev.sesi[0];
+      const loc = [src.tempat, src.kota].filter(Boolean).join(', ');
+      return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${fmt(start)}/${fmt(end)}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(loc)}`;
+    }
+
+    /* ========== INIT ========== */
+    document.addEventListener("DOMContentLoaded", () => {
+      const toGuest = new URLSearchParams(window.location.search).get('to');
+      if (toGuest) $('guestName').textContent = toGuest;
+
+      $('imgWanita').onerror = function () {this.onerror = null; this.src = 'https://placehold.co/400x500/E8EFE6/2C4A3E?text=Hafifah';};
+      $('imgMempelai').onerror = function () {this.onerror = null; this.src = 'https://placehold.co/600x700/E8EFE6/2C4A3E?text=Rizal+%26+Hafifah';};
+      $('imgPria').onerror = function () {this.onerror = null; this.src = 'https://placehold.co/400x500/E8EFE6/2C4A3E?text=Rizal';};
+
+      renderEvents();
+      renderBanks();
+      renderGuestbook();
+      startCountdown();
+      setupScrollObserver();
+    });
+
+    /* ========== BUKA UNDANGAN ========== */
+    function openInvitation() {
+      const cover = $('coverOverlay');
+      const musicBtn = $('musicToggle');
+      const audio = $('audioTrack');
+
+      cover.classList.add('opened');
+      $('envWrapper').classList.add('env-open');
+
+      // Musik latar (lagu.mp3) - diputar saat segel diketuk
+      musicBtn.classList.remove('hidden');
+      musicBtn.classList.add('flex');
+      audio.volume = 0.7;
+      audio.play().catch(() => {
+        $('musicIcon').classList.remove('animate-spin-slow');
+      });
+
+      setTimeout(() => {
+        cover.classList.add('slide-up');
+        document.body.classList.remove('locked');
+        $('mainContent').classList.remove('opacity-0');
+        $('botanical-bg').classList.add('on');
+        window.scrollTo(0, 0);
+      }, 1800);
+
+      // Sembunyikan cover sepenuhnya setelah animasi selesai
+      setTimeout(() => {cover.style.display = 'none';}, 3000);
+    }
+
+    /* ========== AUDIO ========== */
+    function toggleAudio() {
+      const audio = $('audioTrack');
+      const icon = $('musicIcon');
+      if (audio.paused) {
+        audio.play().then(() => {
+          icon.classList.add('animate-spin-slow');
+          showToast("Musik diputar");
+        }).catch(() => showToast("File lagu.mp3 tidak ditemukan"));
+      } else {
+        audio.pause();
+        icon.classList.remove('animate-spin-slow');
+        showToast("Musik dihentikan");
+      }
+    }
+
+    /* ========== ACARA ========== */
+    function renderEvents() {
+      const mapBtn = url => url ? `
+        <a href="${url}" target="_blank" rel="noopener noreferrer"
+           class="px-4 py-2.5 rounded-xl bg-brand-sage text-white text-xs font-semibold hover:bg-brand-sageLight transition-colors inline-flex items-center justify-center gap-1.5 shadow-sm">
+          <i class="fa-solid fa-map-location-dot"></i> Buka Petunjuk Peta
+        </a>` : '';
+
+      $('eventsContainer').innerHTML = DATA.acara.map(item => `
+        <div class="fade-up glass-card rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden text-center">
+          <div class="inline-block px-3 py-1 rounded-full bg-brand-gold/10 text-brand-goldDark text-xs font-bold uppercase tracking-wider mb-2">
+            ${item.judul}
+          </div>
+          <h3 class="font-serif text-2xl font-bold text-brand-sage">${item.tanggalTeks}</h3>
+
+          ${item.sesi ? `
+          <div class="mt-4 space-y-4">
+            ${item.sesi.map(x => `
+              <div class="rounded-xl bg-brand-softBg/80 border border-brand-gold/25 px-4 py-4">
+                <p class="font-sans text-[11px] uppercase tracking-wider text-brand-goldDark font-bold">${x.nama}</p>
+                <p class="font-serif text-xl font-bold text-brand-sage">Pukul ${x.jam}</p>
+                ${x.catatan ? `<p class="font-sans text-[11px] italic text-brand-inkSoft mt-1">${x.catatan}</p>` : ''}
+                <div class="mt-3 pt-3 border-t border-brand-sage/10">
+                  <p class="font-sans font-semibold text-sm text-brand-sage">${x.tempat}</p>
+                  ${x.kota ? `<p class="font-sans text-xs text-brand-inkSoft font-light">${x.kota}</p>` : ''}
+                </div>
+                <div class="mt-3">${mapBtn(x.maps)}</div>
+              </div>`).join('')}
+          </div>` : `
+          <p class="font-sans text-xs text-brand-gold font-semibold mt-1">${item.waktu}</p>
+          <div class="my-4 border-t border-brand-sage/10 pt-4">
+            <p class="font-sans font-semibold text-sm text-brand-sage">${item.tempat}</p>
+            <p class="font-sans text-xs text-brand-inkSoft font-light">${item.kota}</p>
+          </div>
+          <div class="pt-1">${mapBtn(item.maps)}</div>`}
+
+          <div class="flex justify-center pt-4">
+            <a href="${formatGoogleCalUrl(item)}" target="_blank" rel="noopener noreferrer"
+               class="px-4 py-2.5 rounded-xl bg-white border border-brand-gold/40 text-brand-sage text-xs font-semibold hover:bg-brand-softBg transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+              <i class="fa-regular fa-calendar-plus text-brand-gold"></i> Simpan ke Kalender
+            </a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    /* ========== REKENING ========== */
+    function renderBanks() {
+      $('bankContainer').innerHTML = DATA.bank.map((b, i) => `
+        <div class="p-4 rounded-xl bg-white/80 border border-brand-gold/30 shadow-sm flex flex-col items-center gap-2">
+          <div class="flex items-center gap-2 text-brand-sage font-bold font-serif text-lg">
+            <i class="fa-solid ${b.icon} text-brand-gold"></i>
+            <span>${b.bank}</span>
+          </div>
+          <div class="font-mono text-base font-semibold tracking-wider text-brand-sage break-all">${b.no}</div>
+          <div class="text-xs text-brand-inkSoft">a.n. ${b.an}</div>
+          <button type="button" data-bank="${i}"
+                  class="copy-btn mt-1 px-4 py-2 rounded-lg bg-brand-gold/10 text-brand-goldDark text-xs font-semibold hover:bg-brand-gold hover:text-white transition-all duration-300 flex items-center gap-1.5">
+            <i class="fa-regular fa-copy"></i> Salin Nomor Rekening
+          </button>
+        </div>
+      `).join('');
+
+      document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const b = DATA.bank[btn.dataset.bank];
+          copyToClipboard(b.no, b.bank);
+        });
+      });
+    }
+
+    function copyToClipboard(text, label) {
+      const done = () => showToast(`Nomor Rekening ${label} Berhasil Disalin!`);
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(done);
+      } else {
+        const input = document.createElement('input');
+        input.value = text;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+        done();
+      }
+    }
+
+    /* ========== COUNTDOWN ========== */
+    function startCountdown() {
+      const target = new Date(DATA.acara[0].tanggal).getTime();
+      const box = (num, label) => `
+        <div class="flex flex-col items-center py-2 px-1 rounded-xl bg-white/10 backdrop-blur-md border border-white/20">
+          <span class="font-serif font-bold text-xl sm:text-2xl text-brand-goldLight tabular-nums">${String(num).padStart(2, '0')}</span>
+          <span class="text-[9px] uppercase tracking-wider text-gray-300 font-sans mt-0.5">${label}</span>
+        </div>`;
+
+      function update() {
+        const diff = Math.max(0, target - Date.now());
+        const d = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        $('countdown').innerHTML = box(d, 'Hari') + box(h, 'Jam') + box(m, 'Menit') + box(s, 'Detik');
+      }
+      update();
+      setInterval(update, 1000);
+    }
+
+    /* ========== BUKU TAMU ========== */
+    function renderGuestbook() {
+      const feed = $('wishesFeed');
+      $('wishCount').textContent = `${wishesList.length} ucapan`;
+
+      if (!wishesList.length) {
+        feed.innerHTML = `
+          <div class="p-6 rounded-xl bg-white/50 border border-dashed border-brand-sage/20 text-center">
+            <i class="fa-regular fa-envelope-open text-2xl text-brand-gold mb-2"></i>
+            <p class="font-serif text-base text-brand-sage">Belum ada ucapan</p>
+            <p class="text-xs text-brand-inkSoft mt-1">Jadilah yang pertama mengirimkan doa untuk kedua mempelai.</p>
+          </div>`;
+        return;
+      }
+
+      feed.innerHTML = wishesList.map(w => `
+        <article class="p-4 rounded-xl bg-white/75 border border-brand-sage/10 text-left space-y-2 shadow-sm">
+          <div class="flex items-center gap-2">
+            <span class="w-8 h-8 rounded-full bg-brand-sage/10 text-brand-sage flex items-center justify-center shrink-0">
+              <i class="fa-regular fa-user text-xs"></i>
+            </span>
+            <div class="min-w-0">
+              <p class="font-sans font-semibold text-xs sm:text-sm text-brand-sage break-words">${escapeHTML(w.name)}</p>
+              <p class="text-[10px] text-brand-sageMuted">${escapeHTML(w.time || '')}</p>
+            </div>
+          </div>
+          <p class="font-sans text-xs sm:text-sm text-brand-inkSoft leading-relaxed whitespace-pre-wrap break-words">${escapeHTML(w.text)}</p>
+        </article>
+      `).join('');
+    }
+
+    function addGuestbookWish(e) {
+      e.preventDefault();
+      const name = $('wishName').value.trim();
+      const text = $('wishText').value.trim();
+      if (!name || !text) return;
+
+      wishesList.unshift({
+        name, text,
+        time: new Date().toLocaleString('id-ID', {day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'})
+      });
+
+      if (saveGuestbook()) {
+        renderGuestbook();
+        $('wishName').value = '';
+        $('wishText').value = '';
+        showToast('Ucapan berhasil disimpan di buku tamu!');
+      } else {
+        wishesList.shift();
+      }
+    }
+
+    /* ========== ANIMASI SCROLL ========== */
+    function setupScrollObserver() {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {threshold: 0.1});
+      document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    }
+  </script>
+</body>
+
+</html>
