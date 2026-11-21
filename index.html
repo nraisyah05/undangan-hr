@@ -1228,7 +1228,7 @@
     /* ========== REKENING ========== */
     function renderBanks() {
       $('bankContainer').innerHTML = DATA.bank.map((b, i) => `
-        <div class="p-4 rounded-xl bg-white/80 border border-brand-gold/30 shadow-sm flex flex-col items-center gap-2">
+        <div class="p-4 rounded-xl bg-white border border-brand-gold/40 shadow-md flex flex-col items-center gap-2">
           <div class="flex items-center gap-2 text-brand-sage font-bold font-serif text-lg">
             <i class="fa-solid ${b.icon} text-brand-gold"></i>
             <span>${b.bank}</span>
@@ -1236,7 +1236,7 @@
           <div class="font-mono text-base font-semibold tracking-wider text-brand-sage break-all">${b.no}</div>
           <div class="text-xs text-brand-inkSoft">a.n. ${b.an}</div>
           <button type="button" data-bank="${i}"
-                  class="copy-btn mt-1 px-4 py-2 rounded-lg bg-brand-gold/10 text-brand-goldDark text-xs font-semibold hover:bg-brand-gold hover:text-white transition-all duration-300 flex items-center gap-1.5">
+                  class="copy-btn mt-1 px-4 py-2 rounded-lg bg-brand-gold text-white text-xs font-semibold hover:bg-brand-goldDark transition-all duration-300 flex items-center gap-1.5">
             <i class="fa-regular fa-copy"></i> Salin Nomor Rekening
           </button>
         </div>
